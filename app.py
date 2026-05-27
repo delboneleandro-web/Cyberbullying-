@@ -1,203 +1,200 @@
-
-## 1python
+python
 import streamlit as st
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
+# =========================
+# App Config
+# =========================
 st.set_page_config(
-    page_title="Dashboard: O cenário do cyberbullying",
+    page_title="Dashboard: Cyberbullying",
     page_icon="🛡️",
-    layout="wide"
+    layout="wide",
 )
 
-# --------- Dados (baseados no dashboard enviado) ----------
-DEFINICAO = {
+# =========================
+# Models / Types
+# =========================
+@dataclass(frozen=True)
+class Section:
+    title: str
+    body: str
+    icon: str = "📌"
+
+# =========================
+# Content (Dados)
+# =========================
+DEFINICAO: Dict[str, Any] = {
     "texto": (
-        "Intimidação sistemática realizada via tecnologias digitais. "
-        "É caracterizada por ser intencional, repetitiva e com intenção de humilhar/vexar. "
-        "Acontece em plataformas como redes sociais, apps de mensagem e jogos online."
+        "Cyberbullying é uma forma de violência que acontece no ambiente digital. "
+        "Ele envolve ataques repetidos (por mensagens, comentários, postagens, grupos e até jogos online) "
+        "com a intenção de humilhar, intimidar, ameaçar, constranger, perseguir ou excluir alguém.\n\n"
+        "Diferente do bullying presencial, o cyberbullying costuma ter três características marcantes:\n"
+        "• **Rapidez e alcance**: conteúdos podem se espalhar em minutos.\n"
+        "• **Persistência**: mesmo após remoção, pode haver cópias (prints, vídeos, encaminhamentos).\n"
+        "• **Exposição contínua**: a vítima pode sentir que está sendo atacada “24 horas” pelas notificações.\n\n"
+        "Mesmo quando a pessoa tenta “ignorar”, o impacto pode ser profundo — afetando autoestima, saúde mental, "
+        "rotina escolar e relações sociais."
     ),
     "caracteristicas": [
-        "Intencional",
-        "Repetitivo",
-        "Humilhante/Vexatório",
+        "Intenção de ferir: provocar sofrimento, medo, vergonha ou constrangimento.",
+        "Repetição: pode ocorrer em ciclos (mesmo com perfis diferentes).",
+        "Exposição pública: comentários, stories, perfis e grupos amplificam o dano.",
+        "Desigualdade de poder: a vítima pode se sentir sem saída para interromper o ataque.",
+        "Rastro digital: prints, links e registros dificultam “apagar” o que aconteceu.",
+        "Normalização: às vezes o agressor tenta justificar como “brincadeira”.",
     ],
-    "plataformas": [
-        "Redes Sociais",
-        "Apps de Mensagem",
-        "Jogos Online",
+    "onde_acontece": [
+        "Redes sociais (posts, comentários, stories, reels e mensagens diretas).",
+        "Aplicativos de mensagem (grupos, DMs e encaminhamentos).",
+        "Jogos online e chats de comunidade.",
+        "Perfis falsos e contas secundárias (anonimato/mascaramento).",
+        "Grupos e “comunidades” usados para humilhar ou excluir.",
+        "Campanhas coordenadas (várias pessoas atacando ao mesmo tempo).",
+    ],
+    "tipos": [
+        "Ofensas e xingamentos.",
+        "Humilhação pública.",
+        "Ameaças e perseguição.",
+        "Divulgação de informações pessoais (doxxing).",
+        "Imitação e perfis falsos.",
+        "Exclusão e boicote.",
     ],
 }
 
-IMPACTOS = {
+SINAIS: Dict[str, List[str]] = {
+    "emocionais": [
+        "Tristeza frequente, choro fácil, irritação ou ansiedade.",
+        "Medo de abrir redes sociais / receber notificações.",
+        "Baixa autoestima e culpa (“talvez eu mereça”).",
+        "Mudanças bruscas de humor após interações online.",
+    ],
+    "comportamentais": [
+        "Evitar escola, grupos ou atividades por causa de conflitos digitais.",
+        "Reduzir contato com amigos e familiares.",
+        "Passar muito tempo online tentando “resolver” o problema (ou o oposto: sumir).",
+        "Apagar conversas, desativar contas ou trocar de perfil rapidamente.",
+        "Ficar nervoso(a) ao receber notificações.",
+    ],
+    "escolares_e_sociais": [
+        "Queda no rendimento escolar, faltas e dificuldade de concentração.",
+        "Conflitos com colegas e professores relacionados ao que circula online.",
+        "Isolamento social e retraimento.",
+    ],
+    "alerta_grave": [
+        "Falarem em desistir, “não aguento mais” ou demonstrações de autoagressão.",
+        "Ameaças explícitas de violência ou perseguição persistente.",
+        "Recebimento/divulgação de conteúdo íntimo sem consentimento.",
+    ],
+}
+
+IMPACTOS: Dict[str, Dict[str, List[str]]] = {
     "vítimas": {
         "psicológicos": [
-            "Depressão e Ansiedade",
-            "Baixa Autoestima",
+            "Ansiedade e medo constante (especialmente antes de acessar redes).",
+            "Tristeza persistente e sintomas depressivos.",
+            "Baixa autoestima e sensação de culpa.",
+            "Estresse, insônia e dificuldade de concentração.",
+            "Sensação de exposição permanente (dificuldade de “desligar”).",
         ],
         "sociais": [
-            "Isolamento Social",
-            "Queda de Desempenho Acadêmico",
+            "Isolamento e rompimento de amizades.",
+            "Vergonha e medo de julgamento até fora da internet.",
+            "Conflitos na escola e redução da participação em atividades.",
+        ],
+        "escolares": [
+            "Queda de desempenho e aumento de faltas.",
+            "Conflitos em sala e desgaste emocional.",
         ],
     },
     "agressores": {
         "psicológicos": [
-            "Dessensibilização",
-            "Transtornos de Conduta",
+            "Dessensibilização: achar que machucar é “normal”.",
+            "Dificuldade de empatia e autocontrole.",
+            "Risco de manter padrões violentos em outros contextos.",
         ],
         "sociais": [
-            "Comportamento Antissocial",
-            "Delinquência",
+            "Conflitos e punições na escola e em plataformas.",
+            "Consequências legais em casos graves (ameaças, perseguição, divulgação de dados).",
+            "Perda de reputação e rompimento de vínculos.",
         ],
-    }
+    },
+    "espectadores": {
+        "psicológicos": [
+            "Medo de virar alvo e ansiedade por “não saber o que fazer”.",
+            "Culpa por assistir sem intervir quando percebem que era errado.",
+        ],
+        "sociais": [
+            "Normalização da violência quando ninguém reage.",
+            "Pressão do grupo para rir/compartilhar para não ser responsabilizado.",
+        ],
+    },
 }
 
-ACOLHIMENTO = [
+ACOLHIMENTO_VITIMA: List[Dict[str, Any]] = [
     {
         "passo": 1,
-        "titulo": "Escuta e sem julgamento",
-        "desc": "Validar sentimentos e acolher a vítima sem culpabilizar."
+        "titulo": "Acolha com segurança e valide o sentimento",
+        "desc": (
+            "Ouça sem julgamento e confirme que a situação é séria. Evite minimizar (“foi brincadeira”). "
+            "Frases úteis: **“Eu acredito em você.”** e **“Vamos resolver isso juntos.”**"
+        ),
     },
     {
         "passo": 2,
-        "titulo": "Reunir provas digitais",
-        "desc": "Salvar evidências (prints/links) para apoiar denúncia e investigação."
+        "titulo": "Preserve evidências antes de qualquer ação",
+        "desc": (
+            "Salve prints, links, nomes de perfis, datas e horários. "
+            "Se possível, registre também mensagens e comentários. "
+            "Isso ajuda na remoção e na denúncia."
+        ),
     },
     {
         "passo": 3,
-        "titulo": "Bloqueio e denúncia ativa",
-        "desc": "Interromper o contato com o agressor e denunciar o perfil/conteúdo."
-    },
-    {
-        "passo": 4,
-        "titulo": "Acionar apoio especializado",
-        "desc": "Encaminhar para equipe pedagógica e/ou atendimento psicológico."
+        "titulo": "Restringa, denuncie e busque apoio",
+        "desc": (
+            "Bloqueie o agressor, denuncie na plataforma e, se necessário, procure responsáveis, escola "
+            "e/ou órgãos competentes. Em casos graves, busque ajuda imediata."
+        ),
     },
 ]
 
-DADOS = [
-    ("Cenário Global", "2/3 das crianças e adolescentes afetados"),
-    ("Cenário no Brasil", "42,9% dos estudantes afetados"),
-    ("Ranking Mundial", "Brasil - 4º lugar em casos"),
-    ("Impacto por gênero (Brasil)", "Meninas: 7,1% | Meninos: 5,2%"),
-]
+# =========================
+# Interface do Dashboard
+# =========================
+st.title("🛡️ Dashboard Educativo: Cyberbullying")
+st.markdown("---")
 
-FONTES = [
-    "UNICEF",
-    "IBGE",
-    "Diário do Pará",
-    "O Liberal",
-    "Presidência da República",
-]
-
-CREDITO = "Por: Isabela Rocha, Isabella Soares e Leandro."
-
-
-# --------- Layout visual ----------
-st.markdown("""
-<style>
-/* Fundo e tipografia */
-body {
-    background: #0b0f17;
-    color: #e8eefc;
-}
-h1, h2, h3 { color: #ffffff; }
-
-/* Cards */
-.card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 14px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
-
-/* Destaques */
-.badge {
-    display: inline-block;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(255, 0, 60, 0.15);
-    border: 1px solid rgba(255, 0, 60, 0.35);
-    color: #ffd1da;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-hr.sep {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.12);
-    margin: 18px 0;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# Header
-st.markdown('<div class="badge">🛡️ Dashboard Educacional</div>', unsafe_allow_html=True)
-st.title("O cenário do cyberbullying")
-
-st.caption("Conteúdo organizado com base no seu dashboard e no relatório investigativo.")
-
-# Seção: Definição
-st.markdown('<div class="card"><h2>O que é cyberbullying?</h2></div>', unsafe_allow_html=True)
-st.write(DEFINICAO["texto"])
-
-c1, c2 = st.columns(2)
-with c1:
-    st.markdown("### Características")
-    for item in DEFINICAO["caracteristicas"]:
-        st.write(f"• {item}")
-with c2:
-    st.markdown("### Plataformas mais comuns")
-    for item in DEFINICAO["plataformas"]:
-        st.write(f"• {item}")
-
-st.markdown('<div class="card"><h2>Impactos a longo prazo</h2></div>', unsafe_allow_html=True)
-
-colA, colB = st.columns(2)
-
-with colA:
-    st.markdown("### Vítimas")
-    v_ps = IMPACTOS["vítimas"]["psicológicos"]
-    v_so = IMPACTOS["vítimas"]["sociais"]
-    st.markdown("**Psicológicos**")
-    for item in v_ps:
-        st.write(f"• {item}")
-    st.markdown("**Sociais**")
-    for item in v_so:
-        st.write(f"• {item}")
-
-with colB:
-    st.markdown("### Agressores")
-    a_ps = IMPACTOS["agressores"]["psicológicos"]
-    a_so = IMPACTOS["agressores"]["sociais"]
-    st.markdown("**Psicológicos**")
-    for item in a_ps:
-        st.write(f"• {item}")
-    st.markdown("**Sociais**")
-    for item in a_so:
-        st.write(f"• {item}")
-
-st.markdown('<div class="card"><h2>Como acolher a vítima? (Sequência tática)</h2></div>', unsafe_allow_html=True)
-
-for item in ACOLHIMENTO:
-    st.markdown(f"**Passo {item['passo']}: {item['titulo']}**")
-    st.write(item["desc"])
-    st.markdown("---")
-
-st.markdown('<div class="card"><h2>Os dados: cenário atual</h2></div>', unsafe_allow_html=True)
-
-# Tabela simples
-st.table(
-    {label: [valor] for label, valor in DADOS}
+# Sidebar
+st.sidebar.title("📌 Orientação rápida")
+st.sidebar.info(
+    "Use este dashboard para conscientização e apoio. "
+    "Se houver risco imediato ou conteúdo íntimo sem consentimento, procure ajuda urgente."
 )
 
-st.markdown('<div class="card"><h2>Fontes e créditos</h2></div>', unsafe_allow_html=True)
+tab1, tab2, tab3 = st.tabs(["O que é?", "Impactos e Sinais", "Como Acolher"])
 
-st.markdown("### Fontes")
-for f in FONTES:
-    st.write(f"• {f}")
+with tab1:
+    st.header("Entendendo o Cyberbullying")
+    st.info(DEFINICAO["texto"])
 
-st.markdown("### Créditos")
-st.write(CREDITO)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Onde acontece?")
+        for item in DEFINICAO["onde_acontece"]:
+            st.write(f"• {item}")
 
-st.markdown("""
+    with col2:
+        st.subheader("Características")
+        for item in DEFINICAO["caracteristicas"]:
+            st.write(f"• {item}")
+
+    st.subheader("Tipos comuns")
+    cols = st.columns(3)
+    for i, tipo in enumerate(DEFINICAO["tipos"]):
+        with cols[i % 3]:
+            st.write(f"✅ {tipo}")
+
+with tab2:
+    st.header("Sinais e Impactos")
+    st.warning("O
