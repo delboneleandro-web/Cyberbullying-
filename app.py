@@ -194,7 +194,3 @@ with tab1:
     for i, tipo in enumerate(DEFINICAO["tipos"]):
         with cols[i % 3]:
             st.write(f"✅ {tipo}")
-
-with tab2:
-    st.header("Sinais e Impactos")
-    st.warning("O
